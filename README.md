@@ -8,7 +8,7 @@ wrapper around a modified version of Joseph O'Rourke's C triangulate routines, f
 
 http://cs.smith.edu/~orourke/CGCode/SecondEdition/Ccode2.tar.gz
 
-From his excellent book, Computational Geometry in C:
+From his excellent book, <ul>Computational Geometry in C</ul>:
 
 http://cs.smith.edu/~orourke/books/compgeom.html
 
