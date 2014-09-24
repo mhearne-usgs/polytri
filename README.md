@@ -79,7 +79,7 @@ optional arguments:
 
 </pre>
 
-Currently the usage is as a Python library:
+Usage as a Python library:
 
 <pre>
 from polytri.polytri import getTriangles
