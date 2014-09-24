@@ -2,7 +2,7 @@ polytri
 =======
 
 polytri is a library which provides the functionality to extract all
-unique triangle vertices from a convex or concave polygon.  The library is
+unique triangle vertices from a convex or concave polygon (without holes!).  The library is
 a fairly thin ctypes (https://docs.python.org/2.7/library/ctypes.html#module-ctypes)
 wrapper around a modified version of Joseph O'Rourke's C triangulate routines, found here:
 
@@ -51,5 +51,4 @@ TODO
 ====
 
 * As mentioned above, write a command line script for non-Pythonistas.
-* Figure out why the notebook crashes when getTriangles() is called multiple times (not reproducible in console or script).
 
