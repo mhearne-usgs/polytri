@@ -59,7 +59,15 @@ def getMissingTriangle(x1,y1,x2,y2,triangles):
                 triangle = (xv,yv)
                 return triangle
     return None
-        
+
+def floatify(triangles,precision):
+    newtriangles = []
+    for triangle in triangles:
+        xv,yv = triangle
+        xv = [float(xi)/math.pow(10,precision) for xi in xv]
+        yv = [float(yi)/math.pow(10,precision) for yi in yv]
+        newtriangles.append((xv,yv))
+    return newtriangles
     
 def getTriangles(xpoly,ypoly,precision=4):
     '''Partition a polygon (convex or concave, but without any holes) into a set of triangles.  
@@ -129,9 +137,7 @@ def getTriangles(xpoly,ypoly,precision=4):
     #C function definition is: 
     #void	Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3[], int ytri3[]);
     trilib.Triangulate(xverts1,yverts1,xverts2,yverts2,xverts3,yverts3)
-    trilib.dlclose(trilib._handle) #close the library
-    del trilib #delete the library, just in case there are some pointers floating around
-
+    
     #convert C int arrays to lists
     xv1 = list(xverts1)
     yv1 = list(yverts1)
@@ -142,6 +148,8 @@ def getTriangles(xpoly,ypoly,precision=4):
 
     #delete all of our malloc-ed variables
     del x,y,xverts1,yverts1,xverts2,yverts2,xverts3,yverts3
+    trilib.dlclose(trilib._handle) #close the library
+    del trilib #delete the library, just in case there are some pointers floating around
     
     #remove missing data values
     xv1[:] = [xvi for xvi in xv1 if xvi != missing]
@@ -153,15 +161,6 @@ def getTriangles(xpoly,ypoly,precision=4):
     xv3[:] = [xvi for xvi in xv3 if xvi != missing]
     yv3[:] = [yvi for yvi in yv3 if yvi != missing]
 
-    #if the input polygon was floating point, convert these vertices back to float
-    if isFloat:
-        xv1[:] = [float(xvi)/*math.pow(10,precision) for xvi in xv1]
-        yv1[:] = [float(yvi)/*math.pow(10,precision) for yvi in yv1]
-        xv2[:] = [float(xvi)/*math.pow(10,precision) for xvi in xv2]
-        yv2[:] = [float(yvi)/*math.pow(10,precision) for yvi in yv2]
-        xv3[:] = [float(xvi)/*math.pow(10,precision) for xvi in xv3]
-        yv3[:] = [float(yvi)/*math.pow(10,precision) for yvi in yv3]
-    
     #smoosh these arrays into the output data structure we desire
     #list of ((x1,x2,x3),(y1,y2,y3)) triangles.
     triangles = []
@@ -197,7 +196,10 @@ def getTriangles(xpoly,ypoly,precision=4):
         y2 = ypoly[iseg+1]
         triangle = getMissingTriangle(x1,y1,x2,y2,triangles)
         triangles.append(triangle)
-    
+
+    if isFloat:
+        triangles = floatify(triangles,precision)
+        
     return triangles
     
 def main():
@@ -208,5 +210,11 @@ def main():
     for triangle in triangles:
         print triangle
 
+    #let's do some floating point values
+    xpoly = [-119.0+(xp/10.0) for xp in xpoly]
+    ypoly = [32.0+(yp/10.0) for yp in ypoly]
+    triangles = getTriangles(xpoly,ypoly)
+    for triangle in triangles:
+        print triangle
 if __name__ == '__main__':
     main()

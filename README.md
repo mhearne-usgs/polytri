@@ -8,9 +8,11 @@ wrapper around a modified version of Joseph O'Rourke's C triangulate routines, f
 
 http://cs.smith.edu/~orourke/CGCode/SecondEdition/Ccode2.tar.gz
 
-From his excellent book:
+From his excellent book, Computational Geometry in C:
 
-<a href="http://cs.smith.edu/~orourke/books/compgeom.html">Computational Geometry in C</a>
+http://cs.smith.edu/~orourke/books/compgeom.html
+
+The modified C code is gratefully included with the permission of the original author.
 
 Installation and Dependencies
 =============================
@@ -38,4 +40,16 @@ for triangle in triangles:
 The only currently interesting function is getTriangles(), which takes in X and Y
 sequences and returns a list of triangles, where each triangle is defined as two 
 tuples containing three x and y vertices.
+
+An IPython notebook demonstrating the usage (with plots) is included in this repository.  Note that 
+while this library can be used with most "stock" Python distributions, the notebook requires IPython and 
+matplotlib. 
+
+http://nbviewer.ipython.org/github/mhearne-usgs/polytri/blob/master/notebooks/polytri_examples.ipynb
+
+TODO
+====
+
+* As mentioned above, write a command line script for non-Pythonistas.
+* Figure out why the notebook crashes when getTriangles() is called multiple times (not reproducible in console or script).
 

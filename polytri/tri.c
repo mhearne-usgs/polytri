@@ -23,6 +23,7 @@ not removed.
 This code has been modified to be used as a library - in this case, with Python.
 Modifications by Michael Hearne of the US Geological Survey, September 2014.
 Used with gratitude towards the original authors.
+mhearne@usgs.gov
 --------------------------------------------------------------------
 */
 #include <stdio.h>
