@@ -10,7 +10,7 @@ http://cs.smith.edu/~orourke/CGCode/SecondEdition/Ccode2.tar.gz
 
 From his excellent book:
 
-<a href="Computational Geometry in C">http://cs.smith.edu/~orourke/books/compgeom.html</a>
+<a href="http://cs.smith.edu/~orourke/books/compgeom.html">Computational Geometry in C</a>
 
 Installation and Dependencies
 =============================
