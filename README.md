@@ -21,10 +21,64 @@ This package *should* be completely self-contained if your Python vintage is 2.5
 It does contain some C code (see note above), which will require that you have a C compiler
 installed and configured to work with Python.
 
+To install:
+pip install git+git://github.com/mhearne-usgs/polytri.git
+
 Usage
 ======
 
-A command line script to convert polygons into triangles is planned but not yet implemented.
+This repository contains one script which allows you to convert polygons into triangles from the command line:
+<pre>
+usage: triangle.py [-h] [-p PRECISION] [infile] [outfile]
+
+Partition polygon into triangles.
+    Input polygons can be concave or convex, but must not contain any holes.
+    Input format:
+    x1 y1
+    x2 y2
+    x3 y3
+    ...
+    xN yN
+
+    Multi-part polygons can be input by separating the polygons with lines starting with #.
+    x1 y1
+    x2 y2
+    x3 y3
+    #
+    x1 y1
+    x2 y2
+    x3 y3
+
+    Polygon vertices can be integer or floating point values.
+
+    Output format:
+    x1 x2 x3 y1 y2 y3 #one triangle
+    x1 x2 x3 y1 y2 y3 #second triangle
+    ...
+    
+    
+    Usage:
+    When used with no positional arguments, the program assumes that x,y pairs will arrive
+    via stdin, and output will be printed to stdout.
+    When used with one positional argument, that argument will be presumed to be an input text file,
+    and output will be printed to stdout.
+    When used with two positional argument, they are presumed to be the input and output file names.
+    
+
+positional arguments:
+  infile        Input file
+  outfile       Output file
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -p PRECISION  Set precision of float->int conversion. If dealing with
+                lat/lon values, here is a helpful guide: 6 digits of precision
+                is approximately 10 cm. 5 digits of precision is approximately
+                1 meter. 4 digits of precision (the default) is approximately
+                10 meters.
+
+</pre>
+
 Currently the usage is as a Python library:
 
 <pre>

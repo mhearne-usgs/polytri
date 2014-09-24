@@ -10,6 +10,6 @@ setup(name='polytri',
       author_email='mhearne@usgs.gov',
       url='',
       packages=['polytri'],
-      scripts = [],
       ext_modules = [module1],
+      scripts = ['triangle.py'],
 )
