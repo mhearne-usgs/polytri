@@ -99,7 +99,7 @@ An IPython notebook demonstrating the usage (with plots) is included in this rep
 while this library can be used with most "stock" Python distributions, the notebook requires IPython and 
 matplotlib. 
 
-http://nbviewer.ipython.org/github/mhearne-usgs/polytri/blob/master/notebooks/polytri_examples.ipynb
+<a href="http://nbviewer.ipython.org/github/mhearne-usgs/polytri/blob/master/notebooks/polytri_examples.ipynb">Polytri Notebook</a>
 
 TODO
 ====
