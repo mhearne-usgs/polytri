@@ -7,7 +7,7 @@ import sys
 #local imports
 from polytri.polytri import getTriangles
 
-def writeTriangles(xpoly,ypoly,outfile):
+def writeTriangles(xpoly,ypoly,outfile,precision):
     xint = sum([xp-int(xp) == 0 for xp in xpoly])
     yint = sum([yp-int(yp) == 0 for yp in ypoly])
 
@@ -18,7 +18,7 @@ def writeTriangles(xpoly,ypoly,outfile):
         ypoly = [int(yp) for yp in ypoly]
         fmt = '%i %i %i %i %i %i\n'
     
-    triangles = getTriangles(xpoly,ypoly)
+    triangles = getTriangles(xpoly,ypoly,precision=precision)
     for triangle in triangles:
         xv,yv = triangle
         tupleout = tuple(xv + yv)
@@ -38,7 +38,7 @@ def main(args):
         outfile = open(args.outfile,'wt')
     for line in xylines:
         if line.strip().startswith('#'):
-            writeTriangles(xpoly,ypoly,outfile)
+            writeTriangles(xpoly,ypoly,outfile,args.precision)
             
         xt,yt = line.split()
         x = float(xt)
@@ -46,7 +46,7 @@ def main(args):
         xpoly.append(x)
         ypoly.append(y)
         
-    writeTriangles(xpoly,ypoly,outfile)
+    writeTriangles(xpoly,ypoly,outfile,args.precision)
 
     if args.outfile is not None:
         outfile.close()
