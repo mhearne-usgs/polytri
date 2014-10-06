@@ -56,7 +56,7 @@ int	nvertices = 0;		/* Total number of polygon vertices. */
 Function prototypes.
 ---------------------------------------------------------------------*/
 int	AreaPoly2( void );
-void	Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3[], int ytri3[]);
+int	Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3[], int ytri3[]);
 void  ResetVertices();
 void	EarInit( void );
 bool	Diagonal( tVertex a, tVertex b );
@@ -232,7 +232,7 @@ Prints out n-3 diagonals (as pairs of integer indices)
 which form a triangulation of P.
 ---------------------------------------------------------------------*/
 
-void   Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3[], int ytri3[])
+int   Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3[], int ytri3[])
 {
    tVertex v0, v1, v2, v3, v4;	/* five consecutive vertices */
    int   n = nvertices;		/* number of vertices; shrinks to 3. */
@@ -288,10 +288,12 @@ void   Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3
          printf("%%Error in Triangulate:  No ear found.\n");
          PrintPoly();
          printf("showpage\n%%%%EOF\n");
-         exit(EXIT_FAILURE);
+         //exit(EXIT_FAILURE);
+         return 0;
       }
    } /* end outer while loop */
    //printf("closepath stroke\n\n");
+   return 1;
 }
 
 

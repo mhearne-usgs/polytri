@@ -2,9 +2,15 @@ polytri
 =======
 
 polytri is a library which provides the functionality to extract all
-unique triangle vertices from a convex or concave polygon (without holes!).  The library is
-a fairly thin ctypes (https://docs.python.org/2.7/library/ctypes.html#module-ctypes)
-wrapper around a modified version of Joseph O'Rourke's C triangulate routines, found here:
+unique triangle vertices from a convex or concave polygon (without holes!).  
+
+The library is (for now) based on the code found at this Google Code page:
+https://code.google.com/p/poly2tri/source/browse/python/seidel.py?repo=archive&r=96caf237ea676601374ae9d492fe4feb8514b695
+
+The seidel module is included here for ease of installation.
+
+Initial versions of this package used a modified version of Joseph O'Rourke's C triangulate 
+routines, found here:
 
 http://cs.smith.edu/~orourke/CGCode/SecondEdition/Ccode2.tar.gz
 
@@ -14,12 +20,18 @@ http://cs.smith.edu/~orourke/books/compgeom.html
 
 The modified C code is gratefully included with the permission of the original author.
 
+However, these modifications failed with further testing.  The seidel
+module above seemed to work well for all use cases tested by the
+author.  As time permits, the O'Rourke wrapper will be tested and
+hopefully re-incorporated back into this package.
+
 Installation and Dependencies
 =============================
 
 This package *should* be completely self-contained if your Python vintage is 2.5 or greater.
-It does contain some C code (see note above), which will require that you have a C compiler
-installed and configured to work with Python.
+
+This installation does not *currently* require that you have a C compiler
+installed, but it may again in the future (see note above).
 
 To install:
 pip install git+git://github.com/mhearne-usgs/polytri.git
@@ -100,9 +112,4 @@ while this library can be used with most "stock" Python distributions, the noteb
 matplotlib. 
 
 <a href="http://nbviewer.ipython.org/github/mhearne-usgs/polytri/blob/master/notebooks/polytri_examples.ipynb">polytri notebook</a>
-
-TODO
-====
-
-* As mentioned above, write a command line script for non-Pythonistas.
 

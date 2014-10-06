@@ -6,6 +6,11 @@ import sys
 import os.path
 import math
 
+#local imports
+from seidel import Triangulator
+
+TOL = 0.1
+
 class PolyTriException(Exception):
     '''Used for exceptions with getTriangles'''
 
@@ -68,8 +73,51 @@ def floatify(triangles,precision):
         yv = [float(yi)/math.pow(10,precision) for yi in yv]
         newtriangles.append((xv,yv))
     return newtriangles
+
+def pointLike(p,xp,yp):
+    for i in range(0,len(xp)):
+        xi = xp[i]
+        yi = yp[i]
+        if abs(xi - p[0]) < TOL and abs(yi - p[1]) < TOL:
+            return (xi,yi)
+
+    return None
+
+def getTriangles(xpoly,ypoly):
+    '''Partition a polygon (convex or concave, but without any holes) into a set of triangles.  
+    Floating point polygons will be converted to integers with precision digits, triangularized, 
+    then converted back to floats.  For example, the polygon:
+    xpoly=(1.123,2.456,3.789,4.123)
+    ypoly=(1.123,2.456,3.789,4.123)
+    would be converted to:
+
+    xpoly=(11230,24560,37890,41230)
+    ypoly=(11230,24560,37890,41230)
+
+    triangularized, then the vertices converted back to floats using the same precision.
     
-def getTriangles(xpoly,ypoly,precision=4):
+    @param xpoly: Sequence of x coordinates (int or float)
+    @param ypoly: Sequence of y coordinates (int or float)
+    @keyword precision: Floating point values will be multiplied by 10^precision, rounded, and converted to ints.
+    @return: A list of triangles, where each triangle is defined as two tuples containing x vertices and y vertices.
+    '''
+    seidel = Triangulator(zip(xpoly,ypoly))
+    triangles = seidel.triangles()
+    mytriangles = []
+    for triangle in triangles:
+        p1,p2,p3 = triangle
+        p1 = pointLike(p1,xpoly,ypoly)
+        p2 = pointLike(p2,xpoly,ypoly)
+        p3 = pointLike(p3,xpoly,ypoly)
+        if p1 is None or p2 is None or p3 is None:
+            raise Exception,"rubber baby buggy bumpers"
+        px = (p1[0],p2[0],p3[0])
+        py = (p1[1],p2[1],p3[1])
+        mytriangles.append((px,py))
+
+    return mytriangles
+
+def getTriangles_old(xpoly,ypoly,precision=4):
     '''Partition a polygon (convex or concave, but without any holes) into a set of triangles.  
     Floating point polygons will be converted to integers with precision digits, triangularized, 
     then converted back to floats.  For example, the polygon:
@@ -136,7 +184,15 @@ def getTriangles(xpoly,ypoly,precision=4):
 
     #C function definition is: 
     #void	Triangulate(int xtri1[], int ytri1[], int xtri2[], int ytri2[], int xtri3[], int ytri3[]);
-    trilib.Triangulate(xverts1,yverts1,xverts2,yverts2,xverts3,yverts3)
+    res = trilib.Triangulate(xverts1,yverts1,xverts2,yverts2,xverts3,yverts3)
+    if not res:
+        xv1 = list(xverts1)
+        yv1 = list(yverts1)
+        xv2 = list(xverts2)
+        yv2 = list(yverts2)
+        xv3 = list(xverts3)
+        yv3 = list(yverts3)
+        raise PolyTriException('Could not partition polygon into triangles.')
     
     #convert C int arrays to lists
     xv1 = list(xverts1)
@@ -213,6 +269,13 @@ def main():
     #let's do some floating point values
     xpoly = [-119.0+(xp/10.0) for xp in xpoly]
     ypoly = [32.0+(yp/10.0) for yp in ypoly]
+    triangles = getTriangles(xpoly,ypoly)
+    for triangle in triangles:
+        print triangle
+
+    #A real world example that is crashing
+    xpoly = [-92.8287, -91.43668537025957, -88.571821217679, -87.62434277140846, -86.89533245137352, -83.46622930210174, -81.9487623825333, -82.01900143653918, -81.05670480260541, -78.68818876488378, -76.83122933120102, -76.53983717736911, -77.96778427902726, -79.02304323933019, -80.1077091741248, -81.82281944566694, -86.80160967825371, -88.51548887942408, -92.49665318085172, -92.8287]
+    ypoly = [15.4427, 18.409866141413435, 19.150071114853272, 18.981513559876095, 17.33959507931743, 17.105766825823537, 15.66871580009101, 11.645661638030333, 10.32231361923381, 10.81473286101518, 9.440373706636992, 7.6294997814871675, 6.3662545933033945, 7.201576100270601, 6.161451814567838, 6.178697947637887, 9.63242876500934, 11.88654205915206, 13.218550261911416, 15.4427]
     triangles = getTriangles(xpoly,ypoly)
     for triangle in triangles:
         print triangle
